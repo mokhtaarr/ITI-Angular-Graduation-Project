@@ -1,0 +1,165 @@
+<app-header></app-header>
+
+<div *ngIf="OrderListlength != 0">
+    <div *ngIf="pendingListlength != 0">
+        <div class="row" style="margin: 20px">
+            <div class="xl-col-6 sm-col-9">
+                <p class="d-flex justify-content-center fs-4 fw-bold text-secondary">
+                    {{ "Your Order has been requested successfully" | translate }}
+                </p>
+                <br />
+                <p class="d-flex justify-content-center fs-4">
+                    <span class="fw-bold text-secondary">
+                        {{ "It will be arrive at" | translate }}</span>
+                    {{ Address }}
+                </p>
+                <div class="d-flex justify-content-center">
+                    <a class="btn btn-primary" routerLink="/Home">{{
+                        "Back to home" | translate
+                        }}</a>
+                </div>
+            </div>
+        </div>
+        <br />
+        <br />
+        <br />
+        <!-- Pening Orders -->
+        <div *ngIf="pendingListlength!=0">
+        <div>
+            <div class="row" style="margin: 20px">
+                <div class="xl-col-6 sm-col-9">
+                    <p class="d-flex justify-content-center fs-4 fw-bold text-secondary">
+                        {{ "Orders On the way"| translate }}
+                    </p>
+                </div>
+                <table class="table">
+                    <thead>
+                     
+                    </thead>
+                    <tbody>
+                        <ng-container   *ngFor="let order of pendingOrderList">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">{{ "Name" | translate }}</th>
+                                <th scope="col">{{ "Quantity" | translate }}</th>
+                                <th scope="col">{{ "Unit Price" | translate }}</th>
+                                <th scope="col">{{ "Total price" | translate }}</th>
+                            </tr>
+                                <tr  *ngFor="let data of order.productList; let i = index">
+                                    <th>{{ i + 1 }}</th>
+                                    <td> <div  *ngIf="currentCulture == 'en'">
+                                        {{ data.nameEN }}</div>
+                                         <div *ngIf="currentCulture == 'ar'">
+                                       {{ data.nameAR }}</div></td>
+                                    <td>{{ data.quantity }}</td>
+                                    <td>{{ data.totalPrice }}</td>
+                                    <td>{{ data.totalPrice * data.quantity }}</td>
+                                </tr>
+                            
+
+                            <div>
+                            <div class="">
+                                <button type="button" class="btn btn-danger m-1 " data-bs-toggle="modal" (click)="deleteOrder(order.id)"
+                                    data-bs-target="#exampleModal">
+                                    {{ "Delete Order" | translate }}
+                                </button>
+                                <a class="btn btn-warning m-1 " (click)="UpdateOrder(order.id)">{{
+                                    "Update Order" | translate
+                                    }}</a>
+                            </div>
+                        </div>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<br>  
+<br>
+
+
+<!-- Delivered order -->
+<div *ngIf="DeliveredListlength!=0">
+<div class="row d-flex justify-content-center "  >
+    <div class="xl-col-6 sm-col-9 ">
+        <p class="d-flex justify-content-center fs-4 fw-bold text-secondary">
+            {{ "Orders Delivered"| translate }}
+        </p>
+    </div>
+
+    <table class="table"  style="width: 75%;">
+        <thead>
+          
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let order of deliveredOrderList; let ordI = index">
+             
+                       
+            
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">{{ "Name" | translate }}</th>
+                    <th scope="col">{{ "Rate" | translate }}</th>
+                    <th scope="col">{{ order.orderDate|date }}</th>
+                </tr>
+                   
+                    <tr *ngFor="let data of order.productList; let prdI = index">
+                        <th >{{ prdI + 1 }}</th>
+                       <td> <div  *ngIf="currentCulture == 'en'">
+                            {{ data.nameEN }}</div>
+                             <div *ngIf="currentCulture == 'ar'">
+                           {{ data.nameAR }}</div></td>
+                        
+                        <td>  <ngx-star-rating [(ngModel)]="productrate[ordI][prdI]"  (change)="SetRatingValue(order.id,data.id,ordI,prdI)" id="prd{{prdI}}+ord{{ordI}}" ></ngx-star-rating>
+                        </td>
+                        <td></td>
+                    </tr>
+
+                   
+            </ng-container>
+        </tbody>
+    </table>
+
+</div>
+
+</div>
+
+
+
+
+
+
+<!-- Content if no item in Shopping cart -->
+<div *ngIf="OrderListlength == 0">
+    <div class="container-fluid mt-100">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header"></div>
+                    <div class="card-body cart">
+                        <div class="col-sm-12 empty-cart-cls text-center">
+                            <img src="https://i.imgur.com/dCdflKN.png" width="130" height="130"
+                                class="img-fluid mb-4 mr-3" />
+                            <h3>
+                                <strong>{{
+                                    "Your Don't Have any Orders Yet" | translate
+                                    }}</strong>
+                            </h3>
+                            <h4>{{ " You Can choice From Our Product" | translate }}</h4>
+                            <a routerLink="/Home" class="btn btn-primary cart-btn-transform m-3" data-abc="true">
+                                {{ "shopping" | translate }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<br />
+<br />
+<br />
+<app-footer></app-footer>
+</div>
